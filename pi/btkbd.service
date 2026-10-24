@@ -1,0 +1,12 @@
+[Unit]
+Description=Bluetooth HID keyboard emulator
+After=bluetooth.service
+Requires=bluetooth.service
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/btkbd/btkbd.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

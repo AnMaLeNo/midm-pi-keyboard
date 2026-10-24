@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Client for btkbd. Examples:
+  sudo btkbd-send status
+  sudo btkbd-send pairing on|off
+  sudo btkbd-send connect AA:BB:CC:DD:EE:FF
+  sudo btkbd-send text "hello"
+  sudo btkbd-send key enter
+  sudo btkbd-send key r --mods gui
+"""
+import argparse
+import json
+import socket
+import sys
+
+p = argparse.ArgumentParser()
+p.add_argument("cmd", choices=["status", "pairing", "connect", "disconnect", "text", "key", "raw", "relay"])
+p.add_argument("arg", nargs="?")
+p.add_argument("--mods", nargs="*", default=[])
+a = p.parse_args()
+
+req = {"cmd": a.cmd}
+if a.cmd in ("pairing", "relay"):
+    if a.arg or a.cmd == "pairing":
+        req["on"] = (a.arg or "on") == "on"   # `relay` without argument = status only
+elif a.cmd == "connect":
+    req["addr"] = a.arg
+elif a.cmd == "text":
+    req["text"] = a.arg
+elif a.cmd == "key":
+    req["key"] = a.arg
+    req["mods"] = a.mods
+elif a.cmd == "raw":
+    req["hex"] = a.arg
+
+s = socket.socket(socket.AF_UNIX)
+s.connect("/run/btkbd.sock")
+s.sendall((json.dumps(req) + "\n").encode())
+resp = json.loads(s.makefile().readline())
+print(json.dumps(resp))
+sys.exit(0 if resp.get("ok") else 1)
