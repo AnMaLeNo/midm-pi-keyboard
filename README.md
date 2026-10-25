@@ -1,5 +1,8 @@
 # midm-pi-keyboard
 
+> **Ce dépôt n'est plus maintenu.** Son contenu (relais Bluetooth `btkbd`, installation, tests) a été repris, avec le serveur de tir et le flux des touches du clavier, dans le dossier `pi/` du dépôt
+> [AnMaLeNo/aimlabs-pipeline](https://github.com/AnMaLeNo/aimlabs-pipeline). Les corrections et évolutions se font là-bas. (Dépôt privé : demander l'accès à son propriétaire.)
+
 Un Raspberry Pi 5 qui se fait passer pour un **clavier Bluetooth** auprès d'un PC, et qui peut **relayer un clavier branché sur le Pi** (USB ou récepteur sans fil) vers ce PC.
 
 Testé avec : Raspberry Pi 5, Raspberry Pi OS (Debian 12), BlueZ 5.66, noyau 6.12, PC Windows 11 avec radio Intel.
